@@ -1,44 +1,44 @@
 .items {
-    min-height: 100vh;
-    width: 100%;
-    background-color: #1e2225;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #1e2225;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
 }
-  
+
 .loginButton {
-    padding-top: 80px;
+  padding-top: 80px;
 }
-  
+
 .loginButtonStyle {
-    background-color: #e5eefc;
-    border-radius: 10px;
-    width: 20vh;
-    height: 5vh;
-    border-style: solid;
-    color: black;
+  background-color: #e5eefc;
+  border-radius: 10px;
+  width: 20vh;
+  height: 5vh;
+  border-style: solid;
+  color: black;
 }
 
 .loginButtonStyle:hover {
-    background-color: white;
+  background-color: white;
 }
-  
+
 .info {
-    border-radius: 10px;
-    width: 40vh;
-    height: 40vh;
-    background-color: #191a1c;
-    margin-left: 10vh;
-    margin-right: 10vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  border-radius: 10px;
+  width: 40vh;
+  height: 40vh;
+  background-color: #191a1c;
+  margin-left: 10vh;
+  margin-right: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .intro {
-    color: rgba(17,183,122,.856);
-    padding-top: 10vh;
-    font-size: 30px;
+  color: rgba(17, 183, 122, 0.856);
+  padding-top: 10vh;
+  font-size: 30px;
 }

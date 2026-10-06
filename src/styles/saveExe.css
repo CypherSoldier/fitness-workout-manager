@@ -1,39 +1,39 @@
 .savedExercises {
-    color: white;
-    width: 35vh;
-    height: 40vh;
-    background-color: white;
-    border-radius: 5px;
-    background-color: #191a1c;
+  color: white;
+  width: 35vh;
+  height: 40vh;
+  background-color: white;
+  border-radius: 5px;
+  background-color: #191a1c;
 }
 
 .img {
-    width: 35vh;
-    height: 20vh;
+  width: 35vh;
+  height: 20vh;
 }
 
 .bottom {
-    display: flex;
-	justify-content: space-around;
-	align-items: center;
-    padding-top: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 20px;
 }
 
 .top {
-    padding-top: 10px;
+  padding-top: 10px;
 }
 
 .deleteExe {
-    background-color: rgba(173, 17, 17, 0.67);
-    border-radius: 5px;
-    border-style: solid;
-    border-color: #1e2225;
+  background-color: rgba(173, 17, 17, 0.67);
+  border-radius: 5px;
+  border-style: solid;
+  border-color: #1e2225;
 }
 
 .deleteButton {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-evenly;
-	align-items: center;
-    padding-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  padding-top: 20px;
 }

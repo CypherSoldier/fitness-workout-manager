@@ -9,11 +9,11 @@
 } */
 
 header {
-    background-color: #191a1c;
+  background-color: #191a1c;
 }
 
 li {
-    display: inline;
+  display: inline;
 }
 
 /*
@@ -23,105 +23,105 @@ li {
 }
 */
 .logo img {
-    height: 64px;
+  height: 64px;
 }
-  
+
 .user {
-    float: right;
+  float: right;
 }
-  
+
 .nav-bar {
-    max-width: 100%;
-    margin: 0 auto;
-    display: flex;
-    align-items: center; 
-    justify-content: space-between;
-    background-color: #191a1c;
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #191a1c;
 }
-  
+
 .nav-bar a {
-    padding: 10px 30px; 
-    color: rgba(17,183,122,.856);
-    text-decoration: none; 
-    cursor: pointer; 
+  padding: 10px 30px;
+  color: rgba(17, 183, 122, 0.856);
+  text-decoration: none;
+  cursor: pointer;
 }
-  
+
 .nav-bar a:hover {
-    color: white;
+  color: white;
 }
 
 .profile-btn {
-    background: none;
-    border-style: none;
-    cursor: pointer;
+  background: none;
+  border-style: none;
+  cursor: pointer;
 }
 
 .profile-btn img {
-    width: 72px;
-    height: 64px;
-    border-radius: 50%;
+  width: 72px;
+  height: 64px;
+  border-radius: 50%;
 }
-  
+
 .dropdown {
-    float: right;
+  float: right;
 }
-  
+
 #close-CSS {
-    background-image: url('https://img.freepik.com/premium-photo/future-possibilities-futuristic-cyborg-human-modified-with-digital-technology-generative-ai_549702-454.jpg' );
+  background-image: url("https://img.freepik.com/premium-photo/future-possibilities-futuristic-cyborg-human-modified-with-digital-technology-generative-ai_549702-454.jpg");
 }
 
 .rounded-circle {
-    width: 5vh;
-    height: 5vh;
+  width: 5vh;
+  height: 5vh;
 }
 
 /* -------- */
 
 .nav-content {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .nav-left {
-    display: flex;
-    align-items: center;
-    padding-left: 10px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
 }
 
 .nav-right {
-    display: flex;
-    align-items: center;
-    padding-right: 10px;
+  display: flex;
+  align-items: center;
+  padding-right: 10px;
 }
 
 .profile-menu {
-    position: relative;
+  position: relative;
 }
-  
+
 .dropdown-menu {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 40px;
-    background: white;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 150px;
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 40px;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 150px;
 }
-  
+
 .profile-menu:hover .dropdown-menu {
-    display: block;
+  display: block;
 }
-  
+
 .dropdown-item {
-    padding: 10px;
-    display: block;
-    color: #333;
-    text-decoration: none;
+  padding: 10px;
+  display: block;
+  color: #333;
+  text-decoration: none;
 }
-  
+
 .dropdown-item:hover {
-    background: #f3f4f6;
+  background: #f3f4f6;
 }

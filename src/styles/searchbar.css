@@ -5,7 +5,7 @@
 
 .search-container {
   display: flex;
-	justify-content: flex-end;
+  justify-content: flex-end;
   padding-right: 10vh;
 }
 
@@ -25,7 +25,7 @@
 
 .search-container button {
   padding: 0.6rem 1rem;
-  background-color:rgba(17,183,122,.856);
+  background-color: rgba(17, 183, 122, 0.856);
   color: white;
   border: none;
   border-radius: 0.8rem;
