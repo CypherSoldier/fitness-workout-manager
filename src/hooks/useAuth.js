@@ -1,7 +1,7 @@
 // src/hooks/useAuth.js
-import { useState, useEffect } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../services/firebase';
+import { useState, useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../services/firebase";
 
 export const useAuth = () => {
   const [firebaseUser, firebaseLoading] = useAuthState(auth);
@@ -9,7 +9,7 @@ export const useAuth = () => {
   const [jwtLoading, setJwtLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem("accessToken");
     if (token) {
       fetchCurrentUser(token);
     } else {
@@ -19,21 +19,24 @@ export const useAuth = () => {
 
   const fetchCurrentUser = async (token) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_BASE}/current`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
+      const response = await fetch(
+        `${process.env.REACT_APP_API_BASE}/current`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
-      
+      );
+
       if (!response.ok) {
-        throw new Error('Failed to fetch user');
+        throw new Error("Failed to fetch user");
       }
 
       const userData = await response.json();
       setJwtUser(userData);
     } catch (error) {
-      console.error('Error fetching current user:', error);
-      localStorage.removeItem('accessToken');
+      console.error("Error fetching current user:", error);
+      localStorage.removeItem("accessToken");
       setJwtUser(null);
     } finally {
       setJwtLoading(false);
@@ -41,7 +44,7 @@ export const useAuth = () => {
   };
 
   const loginWithJWT = (token) => {
-    localStorage.setItem('accessToken', token);
+    localStorage.setItem("accessToken", token);
     fetchCurrentUser(token);
   };
 
@@ -50,7 +53,7 @@ export const useAuth = () => {
       await auth.signOut();
     }
     if (jwtUser) {
-      localStorage.removeItem('accessToken');
+      localStorage.removeItem("accessToken");
       setJwtUser(null);
     }
   };

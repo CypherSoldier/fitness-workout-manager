@@ -11,7 +11,7 @@ const firebaseConfig = {
   projectId: "fitness-auth-312aa",
   storageBucket: "fitness-auth-312aa.appspot.com",
   messagingSenderId: "458833306159",
-  appId: "1:458833306159:web:89e139ffaea38726ed1cda"
+  appId: "1:458833306159:web:89e139ffaea38726ed1cda",
 };
 
 // Initialize Firebase
