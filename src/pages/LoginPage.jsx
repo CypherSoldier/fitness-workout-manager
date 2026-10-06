@@ -1,34 +1,38 @@
 import { useState } from "react";
-import { auth, googleProvider } from "../services/firebase";
+import { ArrowRight, Dumbbell } from "lucide-react";
 import { signInWithPopup } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { auth, googleProvider } from "../services/firebase";
 import { useAuth } from "../hooks/useAuth";
 
 function LoginPage() {
   const { loginWithJWT } = useAuth();
-
+  const navigate = useNavigate();
   const [isSignUpMode, setIsSignUpMode] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
   const [displayName, setDisplayName] = useState("");
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Firebase Google Sign-In
-  const signInWithGoogle = async (e) => {
-    e.preventDefault();
+  const signInWithGoogle = async () => {
+    setError("");
+    setIsSubmitting(true);
     try {
       await signInWithPopup(auth, googleProvider);
-      // useAuth hook will automatically detect Firebase user
-      window.location.href = "/";
+      navigate("/");
     } catch (err) {
       console.error("Google sign-in error:", err);
-      setError(err.message);
+      setError(err.message || "Unable to sign in with Google.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  // JWT Backend Login/Register
-  const createAccount = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    setError(null);
+    setError("");
+    setIsSubmitting(true);
 
     const payload = isSignUpMode
       ? { display_name: displayName, email, password }
@@ -36,18 +40,13 @@ function LoginPage() {
 
     try {
       const response = await fetch(
-        isSignUpMode
-          ? `${process.env.REACT_APP_API_BASE}/register`
-          : `${process.env.REACT_APP_API_BASE}/login`,
+        `${process.env.REACT_APP_API_BASE}/${isSignUpMode ? "register" : "login"}`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         },
       );
-
       const data = await response.json();
 
       if (!response.ok) {
@@ -55,14 +54,11 @@ function LoginPage() {
       }
 
       if (isSignUpMode) {
-        console.log("Account created:", data);
         setIsSignUpMode(false);
-        setError("Account created! Please sign in.");
+        setError("Account created. Please sign in.");
       } else {
-        // Login with JWT through the hook
         loginWithJWT(data.accessToken);
-        console.log("Logged in successfully");
-        // No need for window.location.href - useAuth will handle the state change
+        // App owns a separate useAuth instance, so reload it to pick up the JWT.
         window.location.href = "/";
       }
     } catch (err) {
@@ -70,126 +66,139 @@ function LoginPage() {
         isSignUpMode ? "Error creating account:" : "Error logging in:",
         err,
       );
-      setError(err.message);
+      setError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#1e2225] px-4">
-      <div className="bg-[#191a1c] p-8 rounded-xl shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-8 text-white">
-          {isSignUpMode ? "Create Account" : "Sign In"}
-        </h2>
+    <main className="flex min-h-screen items-center justify-center bg-[#171b1e] px-4 py-10 text-white">
+      <section
+        aria-labelledby="auth-title"
+        className="w-full max-w-md rounded-2xl border border-[#343d42] bg-[#202629] p-7 shadow-2xl sm:p-9"
+      >
+        <div className="mb-9 flex items-center gap-3 font-semibold tracking-tight">
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-400 text-[#12201c]">
+            <Dumbbell size={21} />
+          </span>
+          <span>Fitness Workout</span>
+        </div>
+
+        <div className="mb-7">
+          <p className="mb-2 text-xs font-bold tracking-[0.16em] text-emerald-300">
+            {isSignUpMode ? "GET STARTED" : "WELCOME BACK"}
+          </p>
+          <h1 id="auth-title" className="text-3xl font-bold tracking-tight">
+            {isSignUpMode ? "Create your account" : "Welcome back"}
+          </h1>
+          <p className="mt-2 text-sm leading-6 text-[#a5b0b5]">
+            {isSignUpMode
+              ? "Build better habits with a plan made for you."
+              : "Sign in to continue your training journey."}
+          </p>
+        </div>
 
         {error && (
-          <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-r">
+          <p
+            role="status"
+            className={`mb-5 rounded-lg border px-4 py-3 text-sm ${
+              error.startsWith("Account created")
+                ? "border-emerald-800 bg-emerald-950/50 text-emerald-200"
+                : "border-rose-900 bg-rose-950/40 text-rose-200"
+            }`}
+          >
             {error}
-          </div>
+          </p>
         )}
 
-        <form onSubmit={createAccount} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {isSignUpMode && (
-            <div>
-              <label className="block text-sm font-medium text-white mb-1">
-                Display Name
-              </label>
+            <label className="block text-sm font-medium text-[#d5dcdf]">
+              Display name
               <input
                 type="text"
                 value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
+                onChange={(event) => setDisplayName(event.target.value)}
                 placeholder="Your name"
+                autoComplete="name"
                 required
-                className="text-white w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                className="mt-2 w-full rounded-lg border border-[#3e494f] bg-[#191f22] px-3.5 py-3 text-white outline-none transition placeholder:text-[#748188] focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20"
               />
-            </div>
-          )}
-
-          <div>
-            <label className="block text-sm font-medium text-white mb-1">
-              Email
             </label>
+          )}
+          <label className="block text-sm font-medium text-[#d5dcdf]">
+            Email address
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(event) => setEmail(event.target.value)}
               placeholder="you@example.com"
+              autoComplete="email"
               required
-              className="text-white w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              className="mt-2 w-full rounded-lg border border-[#3e494f] bg-[#191f22] px-3.5 py-3 text-white outline-none transition placeholder:text-[#748188] focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20"
             />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-white mb-1">
-              Password
-            </label>
+          </label>
+          <label className="block text-sm font-medium text-[#d5dcdf]">
+            Password
             <input
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              required
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="Enter your password"
+              autoComplete={isSignUpMode ? "new-password" : "current-password"}
               minLength={6}
-              className="text-white w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              required
+              className="mt-2 w-full rounded-lg border border-[#3e494f] bg-[#191f22] px-3.5 py-3 text-white outline-none transition placeholder:text-[#748188] focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20"
             />
-          </div>
-
+          </label>
           <button
             type="submit"
-            className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition duration-200 mt-2"
-            style={{ backgroundColor: "rgba(17,183,122,.856)" }}
+            disabled={isSubmitting}
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-400 px-4 py-3 font-semibold text-[#11201b] transition hover:bg-emerald-300 disabled:cursor-wait disabled:opacity-60"
           >
-            {isSignUpMode ? "Create Account" : "Sign In"}
+            {isSubmitting
+              ? "Please wait…"
+              : isSignUpMode
+                ? "Create account"
+                : "Log in"}
+            {!isSubmitting && <ArrowRight size={17} />}
           </button>
         </form>
 
-        <div className="relative my-6">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-3 bg-[#191a1c] text-[#27ce11]">or</span>
-          </div>
+        <div className="my-6 flex items-center gap-3 text-xs text-[#829097]">
+          <span className="h-px flex-1 bg-[#3a4449]" />
+          <span>OR CONTINUE WITH</span>
+          <span className="h-px flex-1 bg-[#3a4449]" />
         </div>
 
         <button
           type="button"
           onClick={signInWithGoogle}
-          className="w-full py-3 px-4 border border-gray-300 hover:bg-gray-50 text-white font-medium rounded-lg transition duration-200 flex items-center justify-center gap-3"
-          style={{ backgroundColor: "rgba(17,183,122,.856)" }}
+          disabled={isSubmitting}
+          className="flex w-full items-center justify-center gap-3 rounded-lg border border-[#465158] bg-[#252d31] px-4 py-3 text-sm font-semibold text-white transition hover:border-[#718087] hover:bg-[#2b3438] disabled:opacity-60"
         >
-          <svg className="w-5 h-5" viewBox="0 0 24 24">
-            {/* Google icon paths */}
-          </svg>
-          Sign in with Google
+          <span className="font-bold text-base text-[#4285f4]">G</span>
+          Continue with Google
         </button>
 
-        <div className="text-center mt-6 text-sm">
-          {isSignUpMode ? (
-            <p>
-              Already have an account?{" "}
-              <button
-                type="button"
-                onClick={() => setIsSignUpMode(false)}
-                className="text-white hover:text-blue-800 font-medium underline"
-              >
-                Sign In
-              </button>
-            </p>
-          ) : (
-            <p className="text-white">
-              Don't have an account?{" "}
-              <button
-                type="button"
-                onClick={() => setIsSignUpMode(true)}
-                className="text-[#12D332] hover:text-blue-800 font-medium underline"
-              >
-                Create Account
-              </button>
-            </p>
-          )}
-        </div>
-      </div>
-    </div>
+        <p className="mt-7 text-center text-sm text-[#a5b0b5]">
+          {isSignUpMode
+            ? "Already have an account?"
+            : "New to Fitness Workout?"}{" "}
+          <button
+            type="button"
+            onClick={() => {
+              setError("");
+              setIsSignUpMode((current) => !current);
+            }}
+            className="font-semibold text-emerald-300 hover:text-emerald-200"
+          >
+            {isSignUpMode ? "Log in" : "Create account"}
+          </button>
+        </p>
+      </section>
+    </main>
   );
 }
 
