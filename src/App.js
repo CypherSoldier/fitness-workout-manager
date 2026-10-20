@@ -6,7 +6,6 @@ import "./styles/searchbar.css";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import Body from "./pages/Dashboard";
-import TrendingPage from "./pages/TrendingPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import Layout from "./components/layout/Layout";
 import ProfilePage from "./pages/Profile";
@@ -38,12 +37,11 @@ function App() {
             ) : user ? (
               <Layout />
             ) : (
-              <Navigate to="/" replace />
-            ) // Layout and "/" might be the same place -> <Body /> (dashboard)
+              <Navigate to="/login" replace />
+            )
           }
         >
           <Route path="/" element={<Body />} />
-          <Route path="/CypherSoldier/Trending" element={<TrendingPage />} />
           <Route path="/CypherSoldier/Analytics" element={<AnalyticsPage />} />
           <Route path="/CypherSoldier/Profile" element={<ProfilePage />} />
           <Route path="/workouts/generate" element={<GenerateWorkout />} />
