@@ -2,7 +2,9 @@ import { Menu } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 function Navbar({ onOpenMenu }) {
   const { user } = useAuth();
-  const initials = (user?.displayName || user?.email || "JD")
+  const displayName =
+    user?.displayName || user?.display_name || user?.name || user?.email;
+  const initials = (displayName || "FM")
     .split(" ")
     .map((part) => part[0])
     .join("")
@@ -29,14 +31,14 @@ function Navbar({ onOpenMenu }) {
             {date}
           </p>
           <h1 className="text-lg font-bold tracking-tight sm:text-xl">
-            Good morning, {user?.displayName?.split(" ")[0] || "Jordan"}
+            Good morning, {displayName?.split(" ")[0] || "Fitness member"}
           </h1>
         </div>
       </div>
       {user?.photoURL ? (
         <img
           src={user.photoURL}
-          alt={`${user.displayName || "User"} profile`}
+          alt={`${displayName || "User"} profile`}
           referrerPolicy="no-referrer"
           className="size-9 rounded-full object-cover"
         />
