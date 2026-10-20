@@ -220,7 +220,7 @@ function AddExercise({ handleAddExercise, initialValues }) {
               </label>
               <input
                 type="number"
-                min="1"
+                min="0"
                 placeholder="50"
                 className="w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:outline-none focus:ring-2 text-white placeholder-gray-500"
                 style={{
