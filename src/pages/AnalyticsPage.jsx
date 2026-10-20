@@ -1,6 +1,5 @@
 // AnalyticsPage.jsx (Parent Component)
 import { useState, useEffect } from "react";
-import ModernSidebar from "../components/analytics/AnalyticsSidebar";
 import AnalyticsChart from "../components/analytics/AnalyticsChart";
 import MetricCard from "../components/analytics/MetricCard";
 import {
@@ -9,7 +8,6 @@ import {
   groupByMuscle,
   buildAllSummary,
 } from "../utils/helpers";
-import { BicepsFlexed } from "lucide-react";
 
 // Muscle groups from document (expand as needed)
 const MUSCLE_GROUPS = [
@@ -22,17 +20,6 @@ const MUSCLE_GROUPS = [
   "Abs",
   "Isolation",
   "All",
-];
-
-const menuItems = [
-  { id: "home", icon: BicepsFlexed, label: "Chest" },
-  { id: "explore", icon: BicepsFlexed, label: "Back" },
-  { id: "trending", icon: BicepsFlexed, label: "Shoulders" },
-  { id: "notifications", icon: BicepsFlexed, label: "Biceps" },
-  { id: "messages", icon: BicepsFlexed, label: "Triceps" },
-  { id: "bookmarks", icon: BicepsFlexed, label: "Legs" },
-  { id: "profile", icon: BicepsFlexed, label: "Isolation" },
-  { id: "other", icon: BicepsFlexed, label: "All" },
 ];
 
 function AnalyticsPage() {
@@ -89,22 +76,35 @@ function AnalyticsPage() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-950 text-gray-100 overflow-hidden">
-      {/* Sidebar - assuming ModernSidebar is already styled; enhance if needed */}
-      <ModernSidebar
-        menuItems={menuItems}
-        selected={selectedGroup}
-        onSelect={setSelectedGroup}
-      />
-
-      <main className="flex-1 overflow-y-auto p-6">
-        <header className="mb-8 bg-gray-950">
+    <main className="min-h-screen bg-gray-950 p-5 text-gray-100 sm:p-6">
+        <header className="mb-8">
           <h2 className="text-3xl font-bold text-emerald-400">
             {selectedGroup} Analytics
           </h2>
           <p className="text-gray-400 mt-1">
             Volume trends, sets distribution & progress insights
           </p>
+          <div
+            className="mt-5 flex flex-wrap gap-2"
+            role="group"
+            aria-label="Select muscle group"
+          >
+            {MUSCLE_GROUPS.map((group) => (
+              <button
+                key={group}
+                type="button"
+                aria-pressed={selectedGroup === group}
+                onClick={() => setSelectedGroup(group)}
+                className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                  selectedGroup === group
+                    ? "border-emerald-400 bg-emerald-400 text-gray-950"
+                    : "border-gray-700 bg-gray-900 text-gray-300 hover:border-emerald-400 hover:text-white"
+                }`}
+              >
+                {group}
+              </button>
+            ))}
+          </div>
         </header>
 
         {selectedGroup === "All" ? (
@@ -233,8 +233,7 @@ function AnalyticsPage() {
             </div> */}
           </>
         )}
-      </main>
-    </div>
+    </main>
   );
 }
 

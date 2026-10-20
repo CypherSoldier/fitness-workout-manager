@@ -5,7 +5,6 @@ import {
   LayoutDashboard,
   LogOut,
   Sparkles,
-  TrendingUp,
   UserRound,
   X,
 } from "lucide-react";
@@ -14,7 +13,6 @@ import { useAuth } from "../hooks/useAuth";
 
 const links = [
   { label: "Dashboard", path: "/", icon: LayoutDashboard },
-  { label: "Progress", path: "/CypherSoldier/Trending", icon: TrendingUp },
   { label: "Activity", path: "/CypherSoldier/Analytics", icon: BarChart3 },
   { label: "Generate Workout", path: "/workouts/generate", icon: Sparkles },
 ];
@@ -23,7 +21,9 @@ function DaySidebar({ sidebarOpen, setSidebarOpen }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const initials = (user?.displayName || user?.email || "JD")
+  const displayName =
+    user?.displayName || user?.display_name || user?.name || user?.email;
+  const initials = (displayName || "FM")
     .split(" ")
     .map((part) => part[0])
     .join("")
@@ -87,7 +87,7 @@ function DaySidebar({ sidebarOpen, setSidebarOpen }) {
           </span>
           <span className="min-w-0 flex-1">
             <strong className="block truncate text-xs text-white">
-              {user?.displayName || "Jordan Davis"}
+              {displayName || "Fitness member"}
             </strong>
             <small className="text-[10px] text-[#89949c]">Free member</small>
           </span>
