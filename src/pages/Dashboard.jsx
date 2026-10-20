@@ -4,8 +4,6 @@ import { Activity, Dumbbell, Plus, Search, TrendingUp, X } from "lucide-react";
 import AddExercise from "../components/ExerciseForm";
 import WorkoutCard from "../components/ExerciseCard";
 import Searchbar from "../components/Searchbar";
-import DaySidebar from "../components/DaySidebar";
-import Navbar from "../components/Navbar";
 import { getApiAuthHeaders } from "../services/apiAuth";
 
 const normalize = (value = "") => value.trim().toLowerCase();
@@ -13,7 +11,6 @@ const displayGroup = (value = "") =>
   value ? `${value.charAt(0).toUpperCase()}${value.slice(1)}` : "";
 
 function Dashboard() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [savedExercises, setSavedExercises] = useState([]);
   const [query, setQuery] = useState("");
@@ -124,17 +121,8 @@ function Dashboard() {
   };
 
   return (
-    <main className="min-h-screen bg-[#191d20] text-[#f4f7f8] lg:flex">
-      <DaySidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      {sidebarOpen && (
-        <button
-          className="fixed inset-0 z-10 bg-black/50 lg:hidden"
-          aria-label="Close navigation"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
+    <>
       <section className="min-w-0 flex-1">
-        <Navbar onOpenMenu={() => setSidebarOpen(true)} />
         <div className="mx-auto w-full max-w-[1420px] px-5 py-8 sm:px-8 lg:px-12 lg:py-12">
           <section className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -253,7 +241,6 @@ function Dashboard() {
             Support
           </a>
         </footer>
-      </section>
       {showForm && (
         <div
           className="fixed inset-0 z-50 grid place-items-center bg-black/75 p-4 backdrop-blur-sm"
@@ -296,7 +283,8 @@ function Dashboard() {
           </div>
         </div>
       )}
-    </main>
+      </section>
+    </>
   );
 }
 
