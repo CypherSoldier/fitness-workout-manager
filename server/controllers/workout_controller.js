@@ -160,7 +160,10 @@ const generateWorkout = async (req, res) => {
     });
   }
   try {
-    const docs = await Form.find({ user_id: String(req.user.id) });
+    const docs = await Form.find({
+      user_id: String(req.user.id),
+      source: { $ne: "ai-generated" },
+    });
     if (!docs.length)
       return res.status(404).json({
         message: "No stored workout records were found for your account.",

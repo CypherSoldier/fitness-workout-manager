@@ -34,13 +34,15 @@ describe("POST /api/workouts/generate", () => {
                   text: JSON.stringify({
                     title: "Strength plan",
                     goal: "Build strength",
-                    height: "180 cm",
-                    weight: "80 kg",
-                    current_workout: "Beginner",
                     workout_frequency: 3,
+                    whyTitle: "Build strength with focused practice",
+                    whyThisPlan:
+                      "One focused session uses your saved squat record. The planned sets and recovery support steady strength progress.",
                     exercises: [
                       {
-                        name: "Squat",
+                        recordId: documentId.toString(),
+                        day: "Monday",
+                        focus: "Strength",
                         sets: 3,
                         reps: "8",
                         restTime: 90,
@@ -59,10 +61,10 @@ describe("POST /api/workouts/generate", () => {
     Form.find.mockResolvedValue([
       { _id: documentId, name: "Squat", user_id: userId },
     ]);
-    Workout.create.mockImplementation(async (data) => ({
-      _id: "generated-id",
-      ...data,
-    }));
+    Workout.create.mockImplementation(async (data) => {
+      const workout = { _id: "generated-id", ...data };
+      return { ...workout, toObject: () => workout };
+    });
   });
 
   afterEach(() => jest.clearAllMocks());
@@ -81,6 +83,14 @@ describe("POST /api/workouts/generate", () => {
 
     expect(response.status).toBe(201);
     expect(response.body.title).toBe("Strength plan");
+    expect(response.body.exercises[0]).toEqual(
+      expect.objectContaining({
+        name: "Squat",
+        day: "Monday",
+        focus: "Strength",
+      }),
+    );
+    expect(response.body.whyTitle).toBe("Build strength with focused practice");
     expect(Form.find).toHaveBeenCalledWith({
       user_id: userId,
       source: { $ne: "ai-generated" },
