@@ -76,8 +76,8 @@ function AnalyticsPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-950 p-5 text-gray-100 sm:p-6">
-        <header className="mb-8">
+    <main className="min-h-screen bg-gray-950 p-8 text-gray-100 sm:p-10">
+        <header className="mb-8 rounded-xl border border-gray-800 bg-gray-900/60 p-6 sm:p-8">
           <h2 className="text-3xl font-bold text-emerald-400">
             {selectedGroup} Analytics
           </h2>
